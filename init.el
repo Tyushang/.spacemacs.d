@@ -31,8 +31,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     python
-     markdown
+     ;; python
+     ;; markdown
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -41,9 +41,9 @@ values."
      helm
      auto-completion
      better-defaults
-     emacs-lisp
+     ;; emacs-lisp
      git
-     ;; markdown
+     markdown
      org
      ;; (shell :variables
      ;;        shell-default-height 30
@@ -60,7 +60,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(cnfonts)
+   dotspacemacs-additional-packages '(imenu-list)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -328,8 +328,8 @@ you should place your code here."
   ;; mode-line related:
   (setq powerline-default-separator 'arrow)
   (setq powerline-height 27)
-  (set-face-attribute 'mode-line nil  :height 129) ;; :fontsizes 200)
-  (set-face-attribute 'mode-line-buffer-id nil :height 129) ;;  :fontsizes 200)
+  (set-face-attribute 'mode-line nil  :height 125) ;; :fontsizes 200)
+  (set-face-attribute 'mode-line-buffer-id nil :height 125) ;;  :fontsizes 200)
 
   ;; key-bindings
   (global-set-key (kbd "<f7>") 'helm-mini)
@@ -351,25 +351,18 @@ you should place your code here."
    (global-centered-cursor-mode +1))
 
   ;; ________________________________________________________________________________ 
-  ;; Chinese and English fonts alignment
-  ;; (use-package cnfonts
-  ;;   :config
-  ;;   (cnfonts-enable)
-  ;;   ;; (setq cnfonts-use-face-font-rescale t)
-  ;;   )
-  ;; ________________________________________________________________________________ 
   (use-package evil-surround
     :ensure t
     :config
     (global-evil-surround-mode 1))
   ;; ________________________________________________________________________________ 
-  (use-package markdown-mode
-    :ensure t
-    :commands (markdown-mode gfm-mode)
-    :mode (("README\\.md\\'" . gfm-mode)
-           ("\\.md\\'" . markdown-mode)
-           ("\\.markdown\\'" . markdown-mode))
-    :init (setq markdown-command "multimarkdown"))
+  ;; (use-package markdown-mode
+  ;;   :ensure t
+  ;;   :commands (markdown-mode gfm-mode)
+  ;;   :mode (("README\\.md\\'" . gfm-mode)
+  ;;          ("\\.md\\'" . markdown-mode)
+  ;;          ("\\.markdown\\'" . markdown-mode))
+  ;;   :init (setq markdown-command "multimarkdown"))
   ;; ________________________________________________________________________________ 
   (use-package imenu-list
     :ensure t
@@ -378,15 +371,29 @@ you should place your code here."
     :config
     (setq imenu-list-focus-after-activation t
           imenu-list-auto-resize nil))
-  ;; (use-package helm-posframe
+  ;; ________________________________________________________________________________ 
+  ;; Chinese and English fonts alignment
+  ;; (use-package cnfonts
+  ;;   :config
+  ;;   (cnfonts-enable)
+  ;;   ;; (setq cnfonts-use-face-font-rescale t)
+  ;;   )
+  ;; ________________________________________________________________________________ 
+  ;; (use-package benchmark-init
   ;;   :ensure t
   ;;   :config
-  ;;   (setq helm-posframe-poshandler
-  ;;         #'posframe-poshandler-window-center)
-  ;;   (setq helm-posframe-width 100)
-  ;;   (helm-posframe-enable)
-  ;;   (global-set-key (kbd "M-x") 'helm-M-x)
-  ;;  )
+  ;;   ;; To disable collection of benchmark data after init is done.
+  ;;   (add-hook 'after-init-hook 'benchmark-init/deactivate))
+  ;; ________________________________________________________________________________ 
+  (use-package helm-posframe
+    :ensure t
+    :config
+    (setq helm-posframe-poshandler
+          #'posframe-poshandler-window-center)
+    (setq helm-posframe-width 100)
+    (helm-posframe-enable)
+    (global-set-key (kbd "M-x") 'helm-M-x)
+   )
   ;; ________________________________________________________________________________ 
   ;; (use-package awesome-tab
   ;;   ;; :ensure t
@@ -406,19 +413,31 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Info-fontify-angle-bracketed-flag nil)
- '(imenu-list-position 'left)
+ '(helm-mode-handle-completion-in-region nil)
+ '(imenu-list-position (quote left))
  '(imenu-list-size 0.2)
  '(markdown-fontify-code-blocks-natively t)
+ '(org-cycle-emulate-tab nil)
  '(org-download-heading-lvl nil)
  '(org-download-image-dir "./error-global-org-download-image-dir")
- '(org-download-method 'directory)
+ '(org-download-method (quote directory))
+ '(org-edit-src-content-indentation 4)
+ '(org-file-apps
+   (quote
+    (("\\.docx?\\'" . "wps %s")
+     (auto-mode . emacs)
+     (directory . emacs)
+     ("\\.mm\\'" . default)
+     ("\\.x?html?\\'" . default)
+     ("\\.pdf\\'" . default))))
  '(org-image-actual-width nil t)
- '(org-indent-indentation-per-level 4)
  '(org-list-indent-offset 2)
  '(package-selected-packages
-   '(imenu-list ox-gfm helm-posframe unfill smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy evil-magit magit git-commit with-editor transient company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete awesome-tab yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic cnfonts mmm-mode markdown-toc markdown-mode gh-md ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired f evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))
+   (quote
+    (benchmark-init imenu-list ox-gfm helm-posframe unfill smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy evil-magit magit git-commit with-editor transient company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete awesome-tab yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic cnfonts mmm-mode markdown-toc markdown-mode gh-md ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired f evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
  '(safe-local-variable-values
-   '((org-image-actual-width quote
+   (quote
+    ((org-image-actual-width quote
                              (400))
      (org-image-actual-width quote
                              (600))
@@ -426,7 +445,7 @@ you should place your code here."
            (concat
             (file-name-base
              (buffer-file-name))
-            ".assets")))))
+            ".assets"))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -456,6 +475,7 @@ you should place your code here."
  '(markdown-header-face-4 ((t (:height 1.0))))
  '(markdown-header-face-5 ((t (:height 1.0))))
  '(markdown-header-face-6 ((t (:height 1.0))))
+ '(mode-line ((t (:background "#222226" :foreground "#b2b2b2" :box (:line-width 1 :color "#5d4d7a") :height 129 :foundry "yahei" :family "consolas"))))
  '(org-document-title ((t (:height 1.0))))
  '(org-level-1 ((t (:height 1.0))))
  '(org-level-2 ((t (:height 1.0))))
